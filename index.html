@@ -61,17 +61,18 @@
         opacity: 0;
       }
 
-      /* Typing effect styles */
+    /* Typing effect */
       .typing-cursor {
         display: inline-block;
         font-weight: 500;
         animation: blink 0.7s infinite;
       }
-        
+
       @keyframes blink {
         0%, 50% { opacity: 1; }
         51%, 100% { opacity: 0; }
       }
+
 
         
       /* Progress bar animations (GPU-friendly with transform) */
@@ -250,9 +251,14 @@
           Control & Instrumentation Engineer | Aspiring ML Engineer
         </p> -->
 
-        <p class="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-8 animate-fade-in-up opacity-0 stagger-2">
+       <!-- <p class="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-8 animate-fade-in-up opacity-0 stagger-2">
             <span id="typing-text"></span><span class="typing-cursor">|</span>
-        </p>
+        </p> -->
+
+          <p class="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-8 animate-fade-in-up opacity-0 stagger-2">
+              <span id="typing-text"></span><span class="typing-cursor">|</span>
+          </p>
+
 
           
         <p class="text-lg text-gray-500 dark:text-gray-400 mb-8 max-w-2xl animate-fade-in-up opacity-0 stagger-3">
@@ -776,25 +782,61 @@
   <script src="app.js" defer></script>
   <script>
 document.addEventListener("DOMContentLoaded", function() {
-  const text = "Control & Instrumentation Engineer | Aspiring ML Engineer | Automation Engineer | Maintenance Engineer | Data Analyst";
-  const typingText = document.getElementById("typing-text");
-  let index = 0;
+  const phrases = [
+    "Control & Instrumentation Engineer",
+    "Aspiring ML Engineer",
+    "Automation Engineer",
+    "Maintenance Engineer",
+    "Data Analyst"
+  ];
 
-  function type() {
-    if (index < text.length) {
-      typingText.textContent += text.charAt(index);
-      index++;
-      setTimeout(type, 70); // typing speed (ms)
+  const el = document.getElementById("typing-text");
+  const cursor = document.querySelector(".typing-cursor");
+
+  const typingSpeed = 70;       // ms per character when typing
+  const deletingSpeed = 40;     // ms per character when deleting
+  const pauseAfterTyping = 1200; // wait before deleting (ms)
+  const pauseAfterDeleting = 400; // wait before typing next (ms)
+
+  let phraseIndex = 0;
+  let charIndex = 0;
+  let typing = true;
+
+  function typeEffect() {
+    const currentPhrase = phrases[phraseIndex];
+
+    if (typing) {
+      // typing forward
+      if (charIndex < currentPhrase.length) {
+        el.textContent += currentPhrase.charAt(charIndex);
+        charIndex++;
+        setTimeout(typeEffect, typingSpeed);
+      } else {
+        typing = false;
+        setTimeout(typeEffect, pauseAfterTyping);
+      }
+    } else {
+      // deleting backward
+      if (charIndex > 0) {
+        el.textContent = currentPhrase.substring(0, charIndex - 1);
+        charIndex--;
+        setTimeout(typeEffect, deletingSpeed);
+      } else {
+        typing = true;
+        phraseIndex = (phraseIndex + 1) % phrases.length; // loop
+        setTimeout(typeEffect, pauseAfterDeleting);
+      }
     }
   }
 
-  // delay a little so it syncs with your fade-in animation
-  setTimeout(type, 800);
+  // small delay so it syncs with fade-in
+  setTimeout(typeEffect, 900);
 });
-</script>
+  </script>
 
 </body>
 </html>
+
 
 
 
