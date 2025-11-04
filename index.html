@@ -61,6 +61,19 @@
         opacity: 0;
       }
 
+      /* Typing effect styles */
+      .typing-cursor {
+        display: inline-block;
+        font-weight: 500;
+        animation: blink 0.7s infinite;
+      }
+        
+      @keyframes blink {
+        0%, 50% { opacity: 1; }
+        51%, 100% { opacity: 0; }
+      }
+
+        
       /* Progress bar animations (GPU-friendly with transform) */
       .progress-bar {
         transform: scaleX(0);
@@ -233,9 +246,15 @@
         <h1 class="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-4 animate-fade-in-up opacity-0 stagger-1">
           Hi, I'm <span class="text-primary">Sharon Ngetich</span>
         </h1>
-        <p class="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-8 animate-fade-in-up opacity-0 stagger-2">
+     <!-- <p class="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-8 animate-fade-in-up opacity-0 stagger-2">
           Control & Instrumentation Engineer | Aspiring ML Engineer
+        </p> -->
+
+        <p class="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-8 animate-fade-in-up opacity-0 stagger-2">
+            <span id="typing-text"></span><span class="typing-cursor">|</span>
         </p>
+
+          
         <p class="text-lg text-gray-500 dark:text-gray-400 mb-8 max-w-2xl animate-fade-in-up opacity-0 stagger-3">
             Now studying AWS Cloud Computing and proficient in Computing, Networking, Security, and Linux — bringing cloud and ML thinking to control & instrumentation.
           Former Maintenance Technician at Glacier Products LTD (Dairyland) (until Sept 2025). 
@@ -755,8 +774,28 @@
 
   <!-- External JavaScript for theme, skills, and interactions -->
   <script src="app.js" defer></script>
+  <script>
+document.addEventListener("DOMContentLoaded", function() {
+  const text = "Control & Instrumentation Engineer | Aspiring ML Engineer";
+  const typingText = document.getElementById("typing-text");
+  let index = 0;
+
+  function type() {
+    if (index < text.length) {
+      typingText.textContent += text.charAt(index);
+      index++;
+      setTimeout(type, 70); // typing speed (ms)
+    }
+  }
+
+  // delay a little so it syncs with your fade-in animation
+  setTimeout(type, 800);
+});
+</script>
+
 </body>
 </html>
+
 
 
 
